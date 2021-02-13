@@ -5,6 +5,7 @@ require("wall")
 require("box")
 require("level")
 require("door")
+require("button")
 
 Game = Object:extend()
 

@@ -1,3 +1,12 @@
+-- 0 fond
+-- 1 mur
+-- 2 PorteTopOpen
+-- 3 PorteBotOpen
+-- 4 PorteTopClose
+-- 5 PorteBotOpen
+-- 6 Bouton / Pressure plate
+-- 7 Boite
+
 Level = Object:extend()
 
 function Level:new()

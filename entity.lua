@@ -2,9 +2,10 @@ Object = require("utils.classic")
 
 Entity = Object:extend()
 
-function Entity:new(x, y, drawable)
+function Entity:new(x, y, drawable, scale)
   self.x = x
   self.y = y
+  self.scale = scale
   if not drawable
   then
     self.drawable = love.graphics.newImage("res/default.png")
@@ -30,7 +31,12 @@ function Entity:update(dt)
 end
 
 function Entity:draw()
-  love.graphics.draw(self.drawable, self.x, self.y)
+  if self.scale
+  then
+    love.graphics.draw(self.drawable, self.x, self.y, 0, self.scale, self.scale)
+  else
+    love.graphics.draw(self.drawable, self.x, self.y)
+  end
 end
 
 function Entity:checkCollision(e)
@@ -44,7 +50,7 @@ function Entity:resolveCollision(e)
   if self.tempStrength > e.tempStrength
   then
     return e:resolveCollision(self)
-  end  
+  end
   if self:checkCollision(e)
   then
     self.tempStrength = e.tempStrength
