@@ -1,12 +1,23 @@
-DoorOpen = Entity:extend()
+DoorTopOpen = Entity:extend()
 
-function DoorOpen:new(x, y)
-  DoorOpen.super.new(self, x, y, "res/dooropen.png")
+function DoorTopOpen:new(x, y)
+  DoorTopOpen.super.new(self, x, y, "res/dooropen.png")
 end
 
+DoorBotOpen = Entity:extend()
 
-DoorClose = Entity:extend()
+function DoorBotOpen:new(x, y)
+  DoorBotOpen.super.new(self, x, y, "res/dooropen.png")
+end
 
-function DoorClose:new(x, y)
-  DoorOpen.super.new(self, x, y, "res/doorclose.png")
+DoorTopClose = Entity:extend()
+
+function DoorTopClose:new(x, y)
+  DoorTopClose.super.new(self, x, y, "res/doorclose.png")
+end
+
+DoorBotClose = Entity:extend()
+
+function DoorBotClose:new(x, y)
+  DoorBotClose.super.new(self, x, y, "res/doorclose.png")
 end
