@@ -1,4 +1,3 @@
-require("utils.functions")
 require("entity")
 require("player")
 require("wall")
@@ -12,6 +11,7 @@ Game = Object:extend()
 function Game:new()
   local files = love.filesystem.getDirectoryItems("levels")
   self.levels = {}
+  self.world = bump.newWorld(50)
   for i, file in ipairs(files)
   do
     local level = require("levels." .. file:match("(.+)%..+"))
@@ -21,44 +21,19 @@ function Game:new()
   self.currentLevel = 1
   self.loadedEntities = {}
   self:setLoadedEntities()
+  for k, v in pairs(self.loadedEntities)
+  do
+    self.world:add(v, v.x, v.y, v.width, v.height)
+  end
 end
 
 function Game:update(dt)
   self:setLoadedEntities()
   for k, obj in pairs(self.loadedEntities)
   do
-    obj:update(dt)
+    obj:update(dt, self.world)
   end
-  local loop = true
-  local limit = 0
-
-  while loop do
-    loop = false
-    limit = limit + 1
-    if limit > 100
-    then
-      break
-    end
-    for i=0, #self.loadedEntities
-    do
-      for j=i+1, #self.loadedEntities
-      do
-        local collision = self.loadedEntities[i]:resolveCollision(self.loadedEntities[j])
-        if collision
-        then
-          loop = true
-        end
-      end
-    end
-  end
-
-  for i=0, #self.loadedEntities
-  do
-    for j=i+1, #self.loadedEntities
-    do
-      self.loadedEntities[i]:resolveCollision(self.loadedEntities[j])
-    end
-  end
+  -- check if level is finished, if finised, load level[currentLevel]->nextLevel and currentLevel++
 end
 
 function Game:draw()

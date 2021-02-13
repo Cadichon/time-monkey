@@ -42,6 +42,9 @@ function Level:createMap()
       elseif w == 7
       then
         table.insert(self.objects, Box((j-1)*50, (i-1)*50))
+      elseif w == 'P'
+      then
+        self.playerSpawn = {x=(j-1)*50, y=(i-1)*50}
       end
     end
   end

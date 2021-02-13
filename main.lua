@@ -1,6 +1,8 @@
 function love.load()
+  require("utils.functions")
   tick = require("utils.tick")
   Object = require("utils.classic")
+  bump = require("utils.bump")
   
   require("game")
   game = Game()
