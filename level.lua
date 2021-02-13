@@ -1,10 +1,26 @@
 Level = Object:extend()
 
 function Level:new()
-  self.walls = nil
-  self.objects = nil
-  self.playerSpawn = nil
+  self.walls = {}
+  self.objects = {}
+  self.playerSpawn = {}
   self.nextLevel = nil
+end
+
+function Level:createMap()
+  for i, v in ipairs(self.map)
+  do
+    for j, w in ipairs(v)
+    do
+      if w == 1
+      then
+        table.insert(self.walls, Wall((j-1)*50, (i-1)*50))
+      elseif w == 2
+      then
+        table.insert(self.objects, Box((j-1)*50, (i-1)*50))
+      end
+    end  
+  end    
 end
 
 function Level:getAllEntities()
