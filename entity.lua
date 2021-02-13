@@ -15,8 +15,13 @@ function Entity:new(x, y, drawable, scale)
   else
     self.drawable = drawable
   end
-  self.width = self.drawable:getWidth()
-  self.height = self.drawable:getHeight()
+  if self.scale then
+    self.width = self.drawable:getWidth() * scale
+    self.height = self.drawable:getHeight() * scale
+  else
+    self.width = self.drawable:getWidth()
+    self.height = self.drawable:getHeight()
+  end
   self.last = {}
   self.last.x = self.x
   self.last.y = self.y
