@@ -15,8 +15,8 @@ function Entity:new(x, y, drawable, scale)
   end
   if self.scale
   then
-    self.width = self.drawable:getWidth() * scale
-    self.height = self.drawable:getHeight() * scale
+    self.width = self.drawable:getWidth() * self.scale
+    self.height = self.drawable:getHeight() * self.scale
   else
     self.width = self.drawable:getWidth()
     self.height = self.drawable:getHeight()
@@ -29,8 +29,8 @@ end
 function Entity:draw()
   if self.scale
   then
-    love.graphics.draw(self.drawable, self.x, self.y)
-  else
     love.graphics.draw(self.drawable, self.x, self.y, 0, self.scale, self.scale)
+  else
+    love.graphics.draw(self.drawable, self.x, self.y)
   end
 end

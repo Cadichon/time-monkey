@@ -1,7 +1,7 @@
 Player = Entity:extend()
 
 function Player:new(x, y)
-  Player.super.new(self, x, y, "res/monkeystop.png")
+  Player.super.new(self, x, y, "res/monkeystop.png", 1.5625)
   self.speed = 250
   self.gravity = 350
   self.jumpVelocity = 0;
