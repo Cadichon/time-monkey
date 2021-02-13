@@ -6,6 +6,9 @@ function Level0:new()
   self.walls = {
     Wall(100, 200, "res/wall.png")
   }
+  self.objects = {
+    Box(400, 100)
+  }
 end
 
 return Level0

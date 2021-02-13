@@ -10,3 +10,17 @@ function dump(o)
       return tostring(o)
    end
 end
+
+function multpairs(t, ...)
+  local i, a, k, v = 1, {...}
+  return
+    function()
+      repeat
+        k, v = next(t, k)
+        if k == nil then
+          i, t = i + 1, a[i]
+        end
+      until k ~= nil or not t
+      return k, v
+    end
+end

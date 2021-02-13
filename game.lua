@@ -1,8 +1,9 @@
+require("utils.functions")
 require("entity")
 require("player")
 require("wall")
+require("box")
 require("level")
-require("utils.functions")
 
 Game = Object:extend()
 
@@ -26,7 +27,30 @@ function Game:update(dt)
   do
     obj:update(dt)
   end
-  for i=0,#self.loadedEntities
+  local loop = true
+  local limit = 0
+  
+  while loop do
+    loop = false
+    limit = limit + 1
+    if limit > 100
+    then
+      break
+    end
+    for i=0, #self.loadedEntities
+    do
+      for j=i+1, #self.loadedEntities
+      do
+        local collision = self.loadedEntities[i]:resolveCollision(self.loadedEntities[j])
+        if collision
+        then
+          loop = true
+        end
+      end
+    end
+  end
+  
+  for i=0, #self.loadedEntities
   do
     for j=i+1, #self.loadedEntities
     do
