@@ -17,10 +17,19 @@ function Level:createMap()
         table.insert(self.walls, Wall((j-1)*50, (i-1)*50))
       elseif w == 2
       then
+        table.insert(self.objects, DoorClose((j-1)*50, (i-1)*50))
+      elseif w == 3
+      then
+        table.insert(self.objects, DoorOpen((j-1)*50, (i-1)*50))
+      elseif w == 4
+      then
+        table.insert(self.objects, Button((j-1)*50, (i-1)*50))
+      elseif w == 5
+      then
         table.insert(self.objects, Box((j-1)*50, (i-1)*50))
       end
-    end  
-  end    
+    end
+  end
 end
 
 function Level:getAllEntities()

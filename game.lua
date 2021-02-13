@@ -4,6 +4,7 @@ require("player")
 require("wall")
 require("box")
 require("level")
+require("door")
 
 Game = Object:extend()
 
@@ -29,7 +30,7 @@ function Game:update(dt)
   end
   local loop = true
   local limit = 0
-  
+
   while loop do
     loop = false
     limit = limit + 1
@@ -49,7 +50,7 @@ function Game:update(dt)
       end
     end
   end
-  
+
   for i=0, #self.loadedEntities
   do
     for j=i+1, #self.loadedEntities
