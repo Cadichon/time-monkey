@@ -19,3 +19,16 @@ function Lever:switch()
     self.drawable = self.leverR
   end
 end
+
+function Lever:draw()
+  if isActive == true then
+    self.drawable = self.leverR
+  else
+    self.drawable = self.leverL
+  end
+  if self.scale then
+    love.graphics.draw(self.drawable, self.x, self.y, 0, self.scale, self.scale)
+  else
+    love.graphics.draw(self.drawable, self.x, self.y)
+  end
+end
