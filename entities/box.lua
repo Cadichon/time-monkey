@@ -29,7 +29,7 @@ function Box:filter(other)
   if other:is(Player) and other == self.playerHolding
   then
     return "cross"
-  elseif other:is(Lever)
+  elseif other:is(Lever) or other:is(PressurePlate)
   then
     return "cross"
   else

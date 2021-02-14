@@ -17,7 +17,3 @@ function Lever:switch()
     self.drawable = love.graphics.newImage("res/lever_r.png")
   end
 end
-
--- function Lever:callback(door)
---   door.
--- end

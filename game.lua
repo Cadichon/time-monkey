@@ -5,6 +5,7 @@ require("entities.wall")
 require("entities.box")
 require("entities.door")
 require("entities.lever")
+require("entities.pressure_plate")
 require("animation")
 
 Game = Object:extend()
@@ -59,6 +60,22 @@ function Game:update(dt)
   for k, obj in pairs(self.loadedEntities)
   do
     obj:update(dt, self.world)
+    if obj:is(PressurePlate) and obj.isActive
+    then
+      local linkedDoor = self:searchById(obj.linkedTo)
+      if linkedDoor and (not linkedDoor.isOpen)
+      then
+        linkedDoor:switch()
+      end
+    end
+    if obj:is(PressurePlate) and (not obj.isActive)
+    then
+      local linkedDoor = self:searchById(obj.linkedTo)
+      if linkedDoor and linkedDoor.isOpen
+      then
+        linkedDoor:switch()
+      end
+    end
   end
   if self:checkEndOfLevel()
   then

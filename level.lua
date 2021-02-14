@@ -55,6 +55,8 @@ function Level:createMap()
             table.insert(self.entities[time], Lever((j-1)*50, (i-1)*50, w.linkedTo))
           elseif w.type == "Door" then
             table.insert(self.entities[time], Door((j-1)*50, (i-1)*50, w.status, w.id))
+          elseif w.type == "PressurePlate" then
+            table.insert(self.entities[time], PressurePlate((j-1)*50, (i-1)*50, w.linkedTo))
           end
         end
       end
