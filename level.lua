@@ -1,11 +1,10 @@
 -- 0 fond
 -- 1 mur
--- 2 PorteTopOpen
--- 3 PorteBotOpen
--- 4 PorteTopClose
--- 5 PorteBotOpen
--- 6 Bouton / Pressure plate
--- 7 Boite
+-- 2 PorteOuverte
+-- 3 PorteFermé
+-- 4 Bouton / Pressure plate
+-- 5 Boite
+-- 'P' Joueur
 
 Level = Object:extend()
 
@@ -14,6 +13,7 @@ function Level:new()
   self.objects = {}
   self.playerSpawn = {}
   self.nextLevel = nil
+  self.isEnded = false
 end
 
 function Level:createMap()
@@ -26,20 +26,14 @@ function Level:createMap()
         table.insert(self.walls, Wall((j-1)*50, (i-1)*50))
       elseif w == 2
       then
-        table.insert(self.objects, DoorTopOpen((j-1)*50, (i-1)*50))
+        table.insert(self.objects, DoorOpen((j-1)*50, (i-1)*50))
       elseif w == 3
       then
-        table.insert(self.objects, DoorBotOpen((j-1)*50, (i-1)*50))
+        table.insert(self.objects, DoorClose((j-1)*50, (i-1)*50))
       elseif w == 4
       then
-        table.insert(self.objects, DoorTopClose((j-1)*50, (i-1)*50))
-      elseif w == 5
-      then
-        table.insert(self.objects, DoorBotClose((j-1)*50, (i-1)*50))
-      elseif w == 6
-      then
         table.insert(self.objects, Button((j-1)*50, (i-1)*50))
-      elseif w == 7
+      elseif w == 5
       then
         table.insert(self.objects, Box((j-1)*50, (i-1)*50))
       elseif w == 'P'
@@ -59,7 +53,4 @@ function Level:getAllEntities()
     i = i + 1
   end
   return ret;
-end
-
-function Level:whenEnd()
 end

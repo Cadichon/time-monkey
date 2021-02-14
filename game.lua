@@ -10,15 +10,23 @@ Game = Object:extend()
 
 function Game:new()
   local files = love.filesystem.getDirectoryItems("levels")
+  local i = 1
   self.levels = {}
   self.world = bump.newWorld(50)
-  for i, file in ipairs(files)
+  for _, file in ipairs(files)
   do
-    if string.find(file, ".lua$")
+    if string.find(file, "^level%d%.lua$")
     then
       local level = require("levels." .. file:match("(.+)%..+"))
       self.levels[i] = level()
-      -- table.insert(self.levels, level())
+      i = i + 1
+    end
+  end
+  for i=1,#self.levels
+  do
+    if i < #self.levels
+    then
+      self.levels[i].nextLevel = self.levels[i + 1]
     end
   end
   self.player = Player(self.levels[1].playerSpawn.x, self.levels[1].playerSpawn.y, "res/player.png")
@@ -37,8 +45,12 @@ function Game:update(dt)
   do
     obj:update(dt, self.world)
   end
-  -- if self.levels[]
-  -- check if level is finished, if finised, load level[currentLevel]->nextLevel and currentLevel++
+  if self.levels[self.currentLevel].isEnded
+  then
+    self:unloadLevel(self.currentLevel)
+    self.currentLevel = self.currentLevel + 1
+    self:loadLevel(self.currentLevel)
+  end
 end
 
 function Game:draw()

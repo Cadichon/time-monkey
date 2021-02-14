@@ -33,7 +33,7 @@ function Player:update(dt, world)
 end
 
 function Player:filter(other)
-  if other:is(Button)
+  if other:is(Button) or other:is(Door)
   then
     return "cross"
   else

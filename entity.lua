@@ -34,7 +34,7 @@ function Entity:update(dt, world)
   
   if (self.isAffectedByGravity)
   then
-    tx, ty = world:check(self, self.x, self.y - 0.001, self.filter); -- check if top touch smth
+    tx, ty = world:check(self, self.x, self.y - 0.1, self.filter); -- check if top touch smth
     if ty == self.y
     then
       self.jumpVelocity = -math.abs(self.jumpVelocity)
@@ -44,7 +44,7 @@ function Entity:update(dt, world)
       self.jumpVelocity = 0
     end
     
-    tx, ty = world:check(self, self.x, self.y + 0.001, self.filter); -- check if on floor
+    tx, ty = world:check(self, self.x, self.y + 0.1, self.filter); -- check if on floor
     if ty == self.y
     then
       self.isOnFloor = true
@@ -69,15 +69,6 @@ function Entity:update(dt, world)
   end
 end
 
-function Entity:filter(other)
-  if other:is(Button)
-  then
-    return "cross"
-  else
-    return "slide"
-  end
-end
-
 function Entity:draw()
   if self.scale
   then
@@ -85,4 +76,8 @@ function Entity:draw()
   else
     love.graphics.draw(self.drawable, self.x, self.y)
   end
+end
+
+function Entity:filter(other)
+  return "slide"
 end
