@@ -101,41 +101,25 @@ function Player:anime(dt)
   end
 end
 
-function Player:takeBox(dt, world)
-  if love.keyboard.isDown("r")
+function Player:tryTakeBox(world)
+  local dx = 0
+  if self.direction == "right"
   then
-    if self.releasedBoxKey == true
+    dx = self.width + 5
+  end
+  if self.direction == "left"
+  then
+    dx = -5
+  end
+  local tx, ty, cols, nbcols = world:check(self, self.x + dx, self.y, self.filter);
+  for i = 1, nbcols
+  do
+    if cols[i].other:is(Box)
     then
-      if self.holdedBox == nil
-      then
-        local dx = 0
-        if self.direction == "right"
-        then
-          dx = 30
-        end
-        if self.direction == "left"
-        then
-          dx = -30
-        end
-        local tx, ty, cols, nbcols = world:check(self, self.x + dx, self.y, self.filter);
-        for i, v in ipairs(cols)
-        do
-          if v.other:is(Box)
-          then
-            v.other.playerHolding = self
-            self.holdedBox = v.other
-            self.releasedBoxKey = false
-            break
-          end
-        end
-      else
-        self.holdedBox.playerHolding = nil
-        self.holdedBox = nil
-        self.releasedBoxKey = false
-      end
+      cols[i].other.playerHolding = self
+      self.holdedBox = cols[i].other
+      break
     end
-  else
-    self.releasedBoxKey = true
   end
 end
 

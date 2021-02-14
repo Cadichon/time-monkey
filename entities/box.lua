@@ -13,20 +13,23 @@ function Box:update(dt, world)
     if self.playerHolding.direction == "right"
     then
       dx = self.playerHolding.width + 5
-    else
+    elseif self.playerHolding.direction == "left"
+    then
       dx = -(self.width + 5)
     end
-    self.x = self.playerHolding.x + dx
-    self.y = self.playerHolding.y + 5
+    self.x, self.y = world:move(self, self.playerHolding.x + dx, self.playerHolding.y + 5, self.filter)
   else
     self.isAffectedByGravity = true
   end
-  world:move(self, self.x, self.y, self.filter)
+  
   Box.super.update(self, dt, world)
 end
 
 function Box:filter(other)
-  if other:is(Button)
+  if other:is(Player) and other == self.playerHolding
+  then
+    return "cross"
+  elseif other:is(Lever)
   then
     return "cross"
   else

@@ -16,6 +16,9 @@ function Game:new()
   self.world = bump.newWorld(50)
   self.currentLevel = 1
   self.loadedEntities = {}
+  self.background = {}
+  self.background.image = love.graphics.newImage("res/wall_2.png")
+  self.background.scale = 3.125
   for _, file in ipairs(files)
   do
     if string.find(file, "^level%d%.lua$")
@@ -55,6 +58,7 @@ function Game:update(dt)
 end
 
 function Game:draw()
+  self:drawBackground()
   for i, obj in ipairs(self.loadedEntities)
   do
     obj:draw()
@@ -63,16 +67,24 @@ function Game:draw()
 end
 
 function Game:keypressed(key, scancode, isrepeat)
-  if key == "e"
+  if key == "f"
   then
     self:timeTravel()
-  elseif key == "f"
+  elseif key == "e"
   then
-    local lever = self.player:canActivateLever(self.world)
-    if lever then
-      local linkedDoor = self:searchById(lever.linkedTo)
-      lever:switch()
-      linkedDoor:switch()
+    if not self.player.holdedBox
+    then
+      local lever = self.player:canActivateLever(self.world)
+      if lever then
+        local linkedDoor = self:searchById(lever.linkedTo)
+        lever:switch()
+        linkedDoor:switch()
+      else
+        self.player:tryTakeBox(self.world)
+      end
+    else
+      self.player.holdedBox.playerHolding = nil
+      self.player.holdedBox = nil
     end
   elseif key == "up"
   then
@@ -146,4 +158,12 @@ function Game:searchById(id)
     end
   end
   return nil
+end
+
+function Game:drawBackground()
+  for i = 0, love.graphics.getWidth() / self.background.image:getWidth() * self.background.scale do
+    for j = 0, love.graphics.getHeight() / self.background.image:getHeight() * self.background.scale do
+      love.graphics.draw(self.background.image, i * self.background.image:getWidth() * self.background.scale, j * self.background.image:getHeight() * self.background.scale, 0, self.background.scale)
+    end
+  end
 end
