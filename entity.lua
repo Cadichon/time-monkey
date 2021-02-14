@@ -9,7 +9,7 @@ function Entity:new(x, y, drawable, scale)
   self.jumpVelocity = 0
   self.isAffectedByGravity = true
   self.collisions = {}
-  
+
   if not drawable
   then
     self.drawable = love.graphics.newImage("res/default.png")
@@ -32,7 +32,7 @@ end
 function Entity:update(dt, world)
   local tx, ty
   local dy = 0
-  
+
   if (self.isAffectedByGravity)
   then
     tx, ty = world:check(self, self.x, self.y - 0.1, self.filter); -- check if top touch smth
@@ -44,7 +44,7 @@ function Entity:update(dt, world)
     then
       self.jumpVelocity = 0
     end
-    
+
     tx, ty = world:check(self, self.x, self.y + 0.1, self.filter); -- check if on floor
     if ty == self.y
     then
@@ -52,13 +52,13 @@ function Entity:update(dt, world)
     else
       self.isOnFloor = false
     end
-    
-    if (not self.isOnFloor) or (self.jumpVelocity ~= 0) 
+
+    if (not self.isOnFloor) or (self.jumpVelocity ~= 0)
     then
       self.jumpVelocity = self.jumpVelocity + self.gravity * dt
       dy = self.jumpVelocity * dt
     end
-    
+
     local newX, newY, cols, nb_cols = world:move(self, self.x, self.y + dy, self.filter)
     if newY == self.y
     then

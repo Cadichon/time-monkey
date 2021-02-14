@@ -4,7 +4,7 @@ require("entities.player")
 require("entities.wall")
 require("entities.box")
 require("entities.door")
-require("entities.button")
+require("entities.lever")
 require("animation")
 
 Game = Object:extend()

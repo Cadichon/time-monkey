@@ -85,7 +85,7 @@ end
 
 
 function Player:filter(other)
-  if other:is(Button) or other:is(Door)
+  if other:is(Lever) or other:is(Door)
   then
     return "cross"
   else

@@ -33,15 +33,12 @@ function Level:createMap()
         if w == 1
         then
           table.insert(self.entities[time], Wall((j-1)*50, (i-1)*50))
-        elseif w == 2
+        elseif w == 2 or w == 3
         then
-          table.insert(self.entities[time], DoorOpen((j-1)*50, (i-1)*50))
-        elseif w == 3
-        then
-          table.insert(self.entities[time], DoorClose((j-1)*50, (i-1)*50))
+          table.insert(self.entities[time], Door((j-1)*50, (i-1)*50, w))
         elseif w == 4
         then
-          table.insert(self.entities[time], Button((j-1)*50, (i-1)*50))
+          table.insert(self.entities[time], Lever((j-1)*50, (i-1)*50))
         elseif w == 5
         then
           table.insert(self.entities[time], Box((j-1)*50, (i-1)*50))
