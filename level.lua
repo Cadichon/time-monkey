@@ -57,7 +57,6 @@ function Level:createMap()
             table.insert(self.entities[time], Door((j-1)*50, (i-1)*50, w.status, w.id))
           end
         end
-
       end
     end
   end

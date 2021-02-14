@@ -1,8 +1,9 @@
-End = Level:extend()
+Level1 = Level:extend()
 
-function End:new()
-  End.super.new(self)
+function Level1:new()
+  Level1.super.new(self)
   self.canPlayerTimeTravel = false
+  self.map.presentBackground = love.graphics.newImage("res/bg.png")
   self.map.present = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -12,12 +13,12 @@ function End:new()
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,{type="Door", id=1, status=3} ,1},
+    {1,3,0,0,0,0,0,0,{type="Lever", linkedTo=1},0,0,0,0,0,0,1},
     {1,0,'P',0,0,0,1,1,1,1,1,1,1,1,1,1},
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
   }
   self:createMap()
 end
 
-return End
+return Level1
