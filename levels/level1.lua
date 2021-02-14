@@ -3,7 +3,7 @@ Level1 = Level:extend()
 function Level1:new()
   Level1.super.new(self)
   self.canPlayerTimeTravel = false
-  self.map.presentBackground = love.graphics.newImage("res/bg.png")
+  self.map.presentBackground = love.graphics.newImage("res/press_e.png")
   self.map.present = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
