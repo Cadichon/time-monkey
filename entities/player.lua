@@ -106,7 +106,7 @@ function Player:takeBox(dt, world)
   then
     if self.releasedBoxKey == true
     then
-      if self.holdedBox == nil 
+      if self.holdedBox == nil
       then
         local dx = 0
         if self.direction == "right"
@@ -137,4 +137,14 @@ function Player:takeBox(dt, world)
   else
     self.releasedBoxKey = true
   end
+end
+
+function Player:canActivateLever(world)
+  local _,_,cols,nbcols = world:check(self, self.x, self.y, self.filter)
+  for i = 1, nbcols do
+    if cols[i].other:is(Lever) then
+      return cols[i].other
+    end
+  end
+  return nil
 end

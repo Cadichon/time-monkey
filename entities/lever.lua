@@ -1,10 +1,11 @@
 Lever = Entity:extend()
 
-function Lever:new(x, y)
+function Lever:new(x, y, linkedTo)
   Lever.super.new(self, x, y, "res/lever_l.png", 3.125)
   self.activeLeverImage = love.graphics.newImage("res/lever_r.png")
   self.isAffectedByGravity = false
   self.isActive = false
+  self.linkedTo = linkedTo
 end
 
 function Lever:switch()

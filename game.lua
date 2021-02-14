@@ -66,6 +66,14 @@ function Game:keypressed(key, scancode, isrepeat)
   if key == "e"
   then
     self:timeTravel()
+  elseif key == "f"
+  then
+    local lever = self.player:canActivateLever(self.world)
+    if lever then
+      local linkedDoor = self:searchById(lever.linkedTo)
+      lever:switch()
+      linkedDoor:switch()
+    end
   elseif key == "up"
   then
     self.player:jump()
@@ -85,7 +93,7 @@ function Game:keyreleased(key, scancode, isrepeat)
   elseif key == "left"
   then
     self.player:stopMoveLeft()
-  end    
+  end
 end
 
 function Game:timeTravel()
@@ -129,4 +137,13 @@ function Game:loadLevel(levelNumber)
   do
     self.world:add(v, v.x, v.y, v.width, v.height)
   end
+end
+
+function Game:searchById(id)
+  for i, value in pairs(self.loadedEntities) do
+    if value.id and value.id == id then
+      return value
+    end
+  end
+  return nil
 end
