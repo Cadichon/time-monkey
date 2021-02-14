@@ -1,6 +1,6 @@
 MagicWall = Entity:extend()
 
-function MagicWall:new(x, y, w, id)
+function MagicWall:new(x, y, w, linkedId, id)
   if w == 2 then
     MagicWall.super.new(self, x, y, "res/empty.png", 3.125)
     self.isOpen = true
@@ -10,6 +10,7 @@ function MagicWall:new(x, y, w, id)
   end
   self.isAffectedByGravity = false
   self.id = id
+  self.linkedId = linkedId
 end
 
 function MagicWall:update(dt, world)

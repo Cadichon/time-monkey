@@ -63,7 +63,7 @@ function Game:update(dt)
     obj:update(dt, self.world)
     if obj:is(PressurePlate) and obj.isActive
     then
-      local linked = self:searchById(obj.linkedTo)
+      local linked = self:searchLinked(obj.linkedTo)
       for i, v in ipairs(linked)
       do
         if not v.isOpen
@@ -74,7 +74,7 @@ function Game:update(dt)
     end
     if obj:is(PressurePlate) and (not obj.isActive)
     then
-      local linked = self:searchById(obj.linkedTo)
+      local linked = self:searchLinked(obj.linkedTo)
       for i, v in ipairs(linked)
       do
         if v.isOpen
@@ -111,7 +111,7 @@ function Game:keypressed(key, scancode, isrepeat)
     then
       local lever = self.player:canActivateLever(self.world)
       if lever then
-        local linked = self:searchById(lever.linkedTo)
+        local linked = self:searchLinked(lever.linkedTo)
         for i, v in ipairs(linked)
         do
           v:switch()
@@ -165,7 +165,6 @@ function Game:timeTravel()
   self.levels[self.currentLevel]:timeTravel()
   for i, obj in ipairs(self.loadedEntities)
   do
-    -- Check si l'object est porté par le joueur // si l'objet peut voyager
     self.world:remove(obj)
   end
   self.loadedEntities = {}
@@ -203,10 +202,10 @@ function Game:loadLevel(levelNumber)
   end
 end
 
-function Game:searchById(id)
+function Game:searchLinked(id)
   local list = {}
   for i, value in pairs(self.loadedEntities) do
-    if value.id and value.id == id then
+    if value.id and value.linkedId == id then
       table.insert(list, value)
     end
   end

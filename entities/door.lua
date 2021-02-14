@@ -1,6 +1,6 @@
 Door = Entity:extend()
 
-function Door:new(x, y, w, id)
+function Door:new(x, y, w, linkedId, id)
   if w == 2 then
     Door.super.new(self, x, y, "res/door_open.png", 3.125)
     self.isOpen = true
@@ -10,6 +10,7 @@ function Door:new(x, y, w, id)
   end
   self.isAffectedByGravity = false
   self.id = id
+  self.linkedId = linkedId
 end
 
 function Door:switch()

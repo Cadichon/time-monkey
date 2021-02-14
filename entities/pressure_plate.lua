@@ -1,10 +1,11 @@
 PressurePlate = Entity:extend()
 
-function PressurePlate:new(x, y, linkedTo)
+function PressurePlate:new(x, y, linkedTo, id)
   PressurePlate.super.new(self, x, y, "res/pressure_plate.png", 3.125)
   self.isAffectedByGravity = false
   self.isActive = false
   self.linkedTo = linkedTo
+  self.id = id
 end
 
 function PressurePlate:update(dt, world)
