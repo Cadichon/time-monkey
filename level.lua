@@ -13,6 +13,8 @@ function Level:new()
   self.map.start = "present"
   self.map.actual = self.map.start
   self.map.present = {}
+  self.map.presentBackground = love.graphics.newImage("res/present_bg.png")
+  self.map.futurBackground = love.graphics.newImage("res/futur_bg.png")
   self.map.futur = {}
   self.entities = {}
   self.entities.present = {}

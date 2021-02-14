@@ -9,22 +9,17 @@ require("animation")
 
 Game = Object:extend()
 
-function Game:new()
+function Game:loadAllMap()
   local files = love.filesystem.getDirectoryItems("levels")
   local i = 1
-  self.levels = {}
-  self.world = bump.newWorld(50)
-  self.currentLevel = 1
-  self.loadedEntities = {}
-  self.background = {}
-  self.background.image = love.graphics.newImage("res/wall_2.png")
-  self.background.scale = 3.125
   for _, file in ipairs(files)
   do
     if string.find(file, "^level%d%.lua$")
     then
-      local level = require("levels." .. file:match("(.+)%..+"))
+      local levelFile = "levels." .. file:match("(.+)%..+")
+      local level = require(levelFile)
       self.levels[i] = level()
+      self.levels[i].file = levelFile
       i = i + 1
     end
   end
@@ -35,6 +30,28 @@ function Game:new()
       self.levels[i].nextLevel = self.levels[i + 1]
     end
   end
+end
+
+function Game:drawBackground()
+  local bg
+  if self.levels[self.currentLevel].map.actual == "present"
+  then
+    bg = self.levels[self.currentLevel].map.presentBackground
+  else
+    bg = self.levels[self.currentLevel].map.futurBackground
+  end
+  love.graphics.draw(bg, 0, 0, 0, 3.125)
+end
+
+function Game:new()
+  self.levels = {}
+  self.world = bump.newWorld(50)
+  self.currentLevel = 1
+  self.loadedEntities = {}
+  self.background = {}
+  self.background.image = love.graphics.newImage("res/wall_2.png")
+  self.background.scale = 3.125
+  self:loadAllMap()
   self:loadLevel(self.currentLevel)
 end
 
@@ -43,17 +60,11 @@ function Game:update(dt)
   do
     obj:update(dt, self.world)
   end
---  for i, v in ipairs(self.loadedEntities[0].collisions)
---  do
---  end
-  if self.levels[self.currentLevel].isEnded
+  if self:checkEndOfLevel()
   then
     self:unloadCurrentLevel()
     self.currentLevel = self.currentLevel + 1
-    if self.currentLevel <= #self.levels
-    then
-      self:loadLevel()
-    end
+    self:loadLevel()
   end
 end
 
@@ -108,6 +119,19 @@ function Game:keyreleased(key, scancode, isrepeat)
   end
 end
 
+function Game:checkEndOfLevel()
+  local _, _, cols, nb_cols = self.world:check(self.player, self.x, self.y, self.filter)
+  
+  for i = 1, nb_cols
+  do
+    if cols[i].other:is(Door) and cols[i].other.isOpen and (cols[i].other.x == self.player.x)
+    then
+      return true
+    end
+  end
+  return false;
+end
+
 function Game:timeTravel()
   -- Attention au time travel si monkey est sur la porte de fin
   self.levels[self.currentLevel]:timeTravel()
@@ -158,12 +182,4 @@ function Game:searchById(id)
     end
   end
   return nil
-end
-
-function Game:drawBackground()
-  for i = 0, love.graphics.getWidth() / self.background.image:getWidth() * self.background.scale do
-    for j = 0, love.graphics.getHeight() / self.background.image:getHeight() * self.background.scale do
-      love.graphics.draw(self.background.image, i * self.background.image:getWidth() * self.background.scale, j * self.background.image:getHeight() * self.background.scale, 0, self.background.scale)
-    end
-  end
 end
