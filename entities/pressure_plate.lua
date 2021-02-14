@@ -20,7 +20,6 @@ function PressurePlate:update(dt, world)
       break
     end
   end
-  print(self.isActive)
 end
 
 

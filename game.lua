@@ -148,7 +148,7 @@ end
 
 function Game:checkEndOfLevel()
   local _, _, cols, nb_cols = self.world:check(self.player, self.x, self.y, self.filter)
-  
+
   for i = 1, nb_cols
   do
     if cols[i].other:is(Door) and cols[i].other.isOpen and (cols[i].other.x == self.player.x)
@@ -160,8 +160,10 @@ function Game:checkEndOfLevel()
 end
 
 function Game:timeTravel()
-  local level = self.levels[self.currentLevel]
-  
+
+  if self.levels[self.currentLevel].map.actual == "present" then
+    self:mixPresentFuturEntities()
+  end
   self.levels[self.currentLevel]:timeTravel()
   for i, obj in ipairs(self.loadedEntities)
   do
@@ -172,6 +174,24 @@ function Game:timeTravel()
   for i, obj in ipairs(self.loadedEntities)
   do
     self.world:add(obj, obj.x, obj.y, obj.width, obj.height)
+  end
+end
+
+function Game:mixPresentFuturEntities()
+  for i, obj in ipairs(self.levels[self.currentLevel].entities["futur"]) do
+    if not obj:is(Wall) and not obj:is(Player)
+    then
+      local tmp = self:searchById(obj.id)
+      if tmp then
+        if obj.isOpen ~= nil then
+          obj.isOpen = tmp.isOpen
+        end
+        if obj.isActive ~= nil then
+          obj.isActive = tmp.isActive
+        end
+        obj.drawable = tmp.drawable
+      end
+    end
   end
 end
 
@@ -210,4 +230,13 @@ function Game:searchLinked(id)
     end
   end
   return list
+end
+
+function Game:searchById(id)
+  for i, value in pairs(self.loadedEntities) do
+    if value.id and value.id == id then
+      return value
+    end
+  end
+  return nil
 end
