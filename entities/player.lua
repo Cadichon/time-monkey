@@ -13,13 +13,13 @@ function Player:new(x, y)
   self.speed = 500
   self.isMovingRight = false
   self.isMovingLeft = false
+  self.releasedBoxKey = false
 end
 
 function Player:update(dt, world)
   local dx = 0
 
   Player.super.update(self, dt, world)
-  
   if self.isMovingRight and not self.isMovingLeft
   then
     self:anime(dt)
@@ -31,6 +31,7 @@ function Player:update(dt, world)
     self.direction = "left"
     dx = -self.speed * dt
   end
+  self:takeBox(dt, world)
 
   if dx ~= 0
   then
@@ -97,5 +98,43 @@ function Player:anime(dt)
   self.animation.currentTime = self.animation.currentTime + dt
   if self.animation.currentTime >= self.animation.duration then
       self.animation.currentTime = self.animation.currentTime - self.animation.duration
+  end
+end
+
+function Player:takeBox(dt, world)
+  if love.keyboard.isDown("r")
+  then
+    if self.releasedBoxKey == true
+    then
+      if self.holdedBox == nil 
+      then
+        local dx = 0
+        if self.direction == "right"
+        then
+          dx = 30
+        end
+        if self.direction == "left"
+        then
+          dx = -30
+        end
+        local tx, ty, cols, nbcols = world:check(self, self.x + dx, self.y, self.filter);
+        for i, v in ipairs(cols)
+        do
+          if v.other:is(Box)
+          then
+            v.other.playerHolding = self
+            self.holdedBox = v.other
+            self.releasedBoxKey = false
+            break
+          end
+        end
+      else
+        self.holdedBox.playerHolding = nil
+        self.holdedBox = nil
+        self.releasedBoxKey = false
+      end
+    end
+  else
+    self.releasedBoxKey = true
   end
 end
