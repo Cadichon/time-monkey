@@ -85,7 +85,7 @@ end
 
 
 function Player:filter(other)
-  if other:is(Lever) or other:is(Door) or other:is(PressurePlate)
+  if other:is(Lever) or other:is(Door) or other:is(PressurePlate) or (other:is(MagicWall) and other.isOpen)
   then
     return "cross"
   else

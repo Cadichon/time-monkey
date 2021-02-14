@@ -6,6 +6,7 @@ require("entities.box")
 require("entities.door")
 require("entities.lever")
 require("entities.pressure_plate")
+require("entities.magic_wall")
 require("animation")
 
 Game = Object:extend()
@@ -62,18 +63,24 @@ function Game:update(dt)
     obj:update(dt, self.world)
     if obj:is(PressurePlate) and obj.isActive
     then
-      local linkedDoor = self:searchById(obj.linkedTo)
-      if linkedDoor and (not linkedDoor.isOpen)
-      then
-        linkedDoor:switch()
+      local linked = self:searchById(obj.linkedTo)
+      for i, v in ipairs(linked)
+      do
+        if not v.isOpen
+        then
+          v:switch()
+        end
       end
     end
     if obj:is(PressurePlate) and (not obj.isActive)
     then
-      local linkedDoor = self:searchById(obj.linkedTo)
-      if linkedDoor and linkedDoor.isOpen
-      then
-        linkedDoor:switch()
+      local linked = self:searchById(obj.linkedTo)
+      for i, v in ipairs(linked)
+      do
+        if v.isOpen
+        then
+          v:switch()
+        end
       end
     end
   end
@@ -104,9 +111,12 @@ function Game:keypressed(key, scancode, isrepeat)
     then
       local lever = self.player:canActivateLever(self.world)
       if lever then
-        local linkedDoor = self:searchById(lever.linkedTo)
+        local linked = self:searchById(lever.linkedTo)
+        for i, v in ipairs(linked)
+        do
+          v:switch()
+        end
         lever:switch()
-        linkedDoor:switch()
       else
         self.player:tryTakeBox(self.world)
       end
@@ -150,7 +160,8 @@ function Game:checkEndOfLevel()
 end
 
 function Game:timeTravel()
-  -- Attention au time travel si monkey est sur la porte de fin
+  local level = self.levels[self.currentLevel]
+  
   self.levels[self.currentLevel]:timeTravel()
   for i, obj in ipairs(self.loadedEntities)
   do
@@ -193,10 +204,11 @@ function Game:loadLevel(levelNumber)
 end
 
 function Game:searchById(id)
+  local list = {}
   for i, value in pairs(self.loadedEntities) do
     if value.id and value.id == id then
-      return value
+      table.insert(list, value)
     end
   end
-  return nil
+  return list
 end
