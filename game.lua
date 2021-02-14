@@ -1,10 +1,10 @@
-require("entity")
-require("player")
-require("wall")
-require("box")
 require("level")
-require("door")
-require("button")
+require("entity")
+require("entities.player")
+require("entities.wall")
+require("entities.box")
+require("entities.door")
+require("entities.button")
 
 Game = Object:extend()
 
@@ -14,8 +14,11 @@ function Game:new()
   self.world = bump.newWorld(50)
   for i, file in ipairs(files)
   do
-    local level = require("levels." .. file:match("(.+)%..+"))
-    table.insert(self.levels, level())
+    if string.find(file, ".lua$")
+    then
+      local level = require("levels." .. file:match("(.+)%..+"))
+      table.insert(self.levels, level())
+    end
   end
   self.player = Player(self.levels[1].playerSpawn.x, self.levels[1].playerSpawn.y, "res/player.png")
   self.currentLevel = 1
@@ -37,10 +40,11 @@ function Game:update(dt)
 end
 
 function Game:draw()
-  for k, obj in pairs(self.loadedEntities)
+  for i, obj in ipairs(self.loadedEntities)
   do
     obj:draw()
   end
+  self.loadedEntities[0]:draw()
 end
 
 function Game:setLoadedEntities()
