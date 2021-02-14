@@ -31,7 +31,6 @@ function Player:update(dt, world)
     self.direction = "left"
     dx = -self.speed * dt
   end
-  self:takeBox(dt, world)
 
   if dx ~= 0
   then
