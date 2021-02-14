@@ -11,17 +11,17 @@ function Lever:new(x, y, linkedTo, id)
 end
 
 function Lever:switch()
-  if isActive == true then
-    isActive = false
+  if self.isActive == true then
+    self.isActive = false
     self.drawable = self.leverL
   else
-    isActive = true
+    self.isActive = true
     self.drawable = self.leverR
   end
 end
 
 function Lever:draw()
-  if isActive == true then
+  if self.isActive == true then
     self.drawable = self.leverR
   else
     self.drawable = self.leverL
