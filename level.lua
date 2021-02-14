@@ -9,48 +9,63 @@
 Level = Object:extend()
 
 function Level:new()
-  self.walls = {}
-  self.objects = {}
+  self.map = {}
+  self.map.start = "present"
+  self.map.actual = self.map.start
+  self.map.present = {}
+  self.map.futur = {}
+  self.entities = {}
+  self.entities.present = {}
+  self.entities.futur = {}
   self.playerSpawn = {}
   self.nextLevel = nil
   self.isEnded = false
+  self.canPlayerTimeTravel = false
 end
 
 function Level:createMap()
-  for i, v in ipairs(self.map)
+  for time, map in pairs({["present"]=self.map.present, ["futur"]=self.map.futur})
   do
-    for j, w in ipairs(v)
+    for i, v in ipairs(map)
     do
-      if w == 1
-      then
-        table.insert(self.walls, Wall((j-1)*50, (i-1)*50))
-      elseif w == 2
-      then
-        table.insert(self.objects, DoorOpen((j-1)*50, (i-1)*50))
-      elseif w == 3
-      then
-        table.insert(self.objects, DoorClose((j-1)*50, (i-1)*50))
-      elseif w == 4
-      then
-        table.insert(self.objects, Button((j-1)*50, (i-1)*50))
-      elseif w == 5
-      then
-        table.insert(self.objects, Box((j-1)*50, (i-1)*50))
-      elseif w == 'P'
-      then
-        self.playerSpawn = {x=(j-1)*50, y=(i-1)*50}
+      for j, w in ipairs(v)
+      do
+        if w == 1
+        then
+          table.insert(self.entities[time], Wall((j-1)*50, (i-1)*50))
+        elseif w == 2
+        then
+          table.insert(self.entities[time], DoorOpen((j-1)*50, (i-1)*50))
+        elseif w == 3
+        then
+          table.insert(self.entities[time], DoorClose((j-1)*50, (i-1)*50))
+        elseif w == 4
+        then
+          table.insert(self.entities[time], Button((j-1)*50, (i-1)*50))
+        elseif w == 5
+        then
+          table.insert(self.entities[time], Box((j-1)*50, (i-1)*50))
+        elseif w == 'P'
+        then
+          self.playerSpawn = {x=(j-1)*50, y=(i-1)*50}
+        end
       end
     end
   end
 end
 
 function Level:getAllEntities()
-  local ret = {}
-  local i = 1
-  for k, obj in multpairs(self.walls, self.objects)
-  do
-    ret[i] = obj
-    i = i + 1
+  return self.entities[self.map.actual]
+end
+
+function Level:timeTravel()
+  if self.canPlayerTimeTravel
+  then
+    if self.map.actual == "present"
+    then
+      self.map.actual = "futur"
+    else
+      self.map.actual = "present"
+    end
   end
-  return ret;
 end

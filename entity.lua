@@ -8,6 +8,7 @@ function Entity:new(x, y, drawable, scale)
   self.gravity = 4000
   self.jumpVelocity = 0
   self.isAffectedByGravity = true
+  self.collisions = {}
   
   if not drawable
   then
@@ -67,6 +68,7 @@ function Entity:update(dt, world)
       self.isOnFloor = false
     end
   end
+  _, _, self.collisions = world:check(self, self.x, self.y, self.filter)
 end
 
 function Entity:draw()

@@ -1,35 +1,31 @@
 Player = Entity:extend()
 
 function Player:new(x, y)
-  Player.super.new(self, x, y, "res/funkykong.png", 1.5625)
+  Player.super.new(self, x, y)
   self.animation = newAnimation(love.graphics.newImage("res/funkykong.png"), 32, 32, 1)
   self.jumpImage = love.graphics.newImage("res/funkykongjump.png")
-  -- self.stopImage = love.graphics.newImage("res/funkykongstop.png")
   self.direction = "right"
 
+  self.scale = 1.5625
   self.width = 32 * 1.5625
   self.height = 32 * 1.5625
   self.hasColision = true
   self.speed = 500
-  self.isOnFloor = false
+  self.isMovingRight = false
+  self.isMovingLeft = false
 end
 
 function Player:update(dt, world)
   local dx = 0
-  local tx, ty
 
-  if love.keyboard.isDown("up") and self.isOnFloor
-  then
-    self.jumpVelocity = -1000
-  end
   Player.super.update(self, dt, world)
-
-  if love.keyboard.isDown("right")
+  
+  if self.isMovingRight and not self.isMovingLeft
   then
     self:anime(dt)
     self.direction = "right"
     dx = self.speed * dt
-  elseif love.keyboard.isDown("left")
+  elseif self.isMovingLeft and not self.isMovingRight
   then
     self:anime(dt)
     self.direction = "left"
@@ -41,6 +37,29 @@ function Player:update(dt, world)
     local newX, newY, cols, nb_cols = world:move(self, self.x + dx, self.y, self.filter)
     self.x = newX
   end
+end
+
+function Player:jump()
+  if self.isOnFloor
+  then
+    self.jumpVelocity = -1000
+  end
+end
+
+function Player:startMoveRight()
+  self.isMovingRight = true
+end
+
+function Player:startMoveLeft()
+  self.isMovingLeft = true
+end
+
+function Player:stopMoveRight()
+  self.isMovingRight = false
+end
+
+function Player:stopMoveLeft()
+  self.isMovingLeft = false
 end
 
 function Player:draw()
