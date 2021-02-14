@@ -45,6 +45,12 @@ function Level:createMap()
           elseif w == 5
           then
             table.insert(self.entities[time], Box((j-1)*50, (i-1)*50))
+          elseif w == 6
+          then
+            table.insert(self.entities[time], Banana((j-1)*50, (i-1)*50))
+          elseif w == 7
+          then
+            table.insert(self.entities[time], Teleportatron((j-1)*50, (i-1)*50))
           end
         elseif type(w) == "string" then
           if w == 'P' then

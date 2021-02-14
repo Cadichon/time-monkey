@@ -7,6 +7,8 @@ require("entities.door")
 require("entities.lever")
 require("entities.pressure_plate")
 require("entities.magic_wall")
+require("entities.banana")
+require("entities.teleportatron")
 require("animation")
 
 Game = Object:extend()

@@ -1,7 +1,7 @@
-Level5 = Level:extend()
+Level7= Level:extend()
 
-function Level5:new()
-  Level5.super.new(self)
+function Level7:new()
+  Level7.super.new(self)
   self.canPlayerTimeTravel = false
   self.map.presentBackground = love.graphics.newImage("res/bg.png")
   self.map.present = {
@@ -11,14 +11,14 @@ function Level5:new()
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,0,0,0,0,0,0,6,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,3,0,0,0,0,0,0,0,0,0,0,0,0,2,1},
-    {1,0,'P',0,0,0,0,0,7,0,0,0,0,0,0,1},
+    {1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+    {1,0,'P',0,0,0,0,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
   }
   self:createMap()
 end
 
-return Level5
+return Level7
