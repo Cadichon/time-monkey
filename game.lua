@@ -17,7 +17,8 @@ function Game:new()
     if string.find(file, ".lua$")
     then
       local level = require("levels." .. file:match("(.+)%..+"))
-      table.insert(self.levels, level())
+      self.levels[i] = level()
+      -- table.insert(self.levels, level())
     end
   end
   self.player = Player(self.levels[1].playerSpawn.x, self.levels[1].playerSpawn.y, "res/player.png")
@@ -36,6 +37,7 @@ function Game:update(dt)
   do
     obj:update(dt, self.world)
   end
+  -- if self.levels[]
   -- check if level is finished, if finised, load level[currentLevel]->nextLevel and currentLevel++
 end
 

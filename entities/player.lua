@@ -43,12 +43,6 @@ function Player:update(dt, world)
   if dx ~= 0 or dy ~= 0
   then
     local newX, newY, cols, nb_cols = world:move(self, self.x + dx, self.y + dy, self.filter)
-    if self.holdedBox
-    then
-      local newBoxX, newBoxY = world:move(self.holdedBox, self.holdedBox.x + dx, self.holdedBox.y + dy, self.holdedBox.filter)
-      self.holdedBox.x = newBoxX
-      self.holdedBox.y = newBoxY
-    end
     if newY == self.y
     then
       self.isOnFloor = true
@@ -56,15 +50,7 @@ function Player:update(dt, world)
       self.isOnFloor = false
     end
     self.y = newY
-    self.x = newX
-    
-    for i=1, nb_cols
-    do
-      if cols[i].other:is(Box)
-      then
-        self.holdedBox = cols[i].other
-      end
-    end
+    self.x = newX    
   end
   tx, ty = world:check(self, self.x, self.y + 0.001, self.filter); -- check if on floor
   if ty == self.y
@@ -72,5 +58,14 @@ function Player:update(dt, world)
   	self.isOnFloor = true
   else
 	  self.isOnFloor = false
+  end
+end
+
+function Player:filter(other)
+  if other:is(Button)
+  then
+    return "cross"
+  else
+    return "slide"
   end
 end
