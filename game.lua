@@ -57,6 +57,7 @@ function Game:new()
   self.background.scale = 3.125
   self:loadAllMap()
   self:loadLevel(self.currentLevel)
+  love.window.setTitle("Time Monkey")
 end
 
 function Game:update(dt)
